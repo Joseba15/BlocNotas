@@ -1,6 +1,7 @@
-package bloc.com.model;
+package bloc.com.notas;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Nota implements Comparable<Nota> {
 
@@ -12,14 +13,30 @@ public class Nota implements Comparable<Nota> {
 	
 	public Nota (String texto) {
 		this.texto=texto;
+		this.codigo=codigoSiguiente++;
+		this.fechaCreacion=LocalDateTime.now();
 		
 	}
+
 	
+	public boolean isModificadoAnterior(Nota otraNota){
+		boolean esAnterior=false;
+	 
+		if (this.getFechaUltimaModificacion()==null && otraNota.getFechaUltimaModificacion()==null) {
+			esAnterior=false;
+	   }else if (this.isModificado() && otraNota.isModificado()) {
+			esAnterior=this.getFechaUltimaModificacion().isBefore(otraNota.getFechaUltimaModificacion());
+	   }else if (this.isModificado()) {
+		   	esAnterior=true;
+	}
+		
+		return esAnterior;
+	}
 	
-	public boolean isCreadoAnterior (Nota nota) {
+	public boolean isCreadoAnterior (Nota otraNota) {
 		boolean esAnterior=false;
 		
-		if (this.getFechaCreacion().compareTo(nota.getFechaCreacion())<0) {
+		if (this.getFechaCreacion().isBefore(otraNota.getFechaCreacion())) {
 			esAnterior=true;
 			
 		}
@@ -37,11 +54,11 @@ public class Nota implements Comparable<Nota> {
 
 
 	public boolean isModificado() {
-		boolean estaModfechaCreacionifacado=true;
+		boolean estaModfechaCreacion=true;
 		if (fechaUltimaModificacion==null) {
-			estaModifacado=false;
+			estaModfechaCreacion=false;
 		}
-		return estaModifacado;
+		return estaModfechaCreacion;
 	}
 
 
@@ -55,6 +72,7 @@ public class Nota implements Comparable<Nota> {
 
 	public void setTexto(String texto) {
 		this.texto = texto;
+		this.fechaUltimaModificacion=LocalDateTime.now();
 	}
 
 	public LocalDateTime getFechaCreacion() {
@@ -65,45 +83,32 @@ public class Nota implements Comparable<Nota> {
 		return fechaUltimaModificacion;
 	}
 
-	
+
+
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((fechaCreacion == null) ? 0 : fechaCreacion.hashCode());
-		result = prime * result + ((texto == null) ? 0 : texto.hashCode());
-		return result;
+		return Objects.hash(fechaCreacion, texto);
 	}
 
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Nota)) {
-			return false;
-		}
-		Nota other = (Nota) obj;
-		if (fechaCreacion == null) {
-			if (other.fechaCreacion != null) {
-				return false;
+		boolean sonIguales=true;
+		
+		if (obj!=null) {
+			if (this==obj) {
+				sonIguales=true;
+				
+			}else{
+				Nota laOtra = (Nota)obj;
+				sonIguales=this.texto.equals(laOtra.getTexto())
+						&& this.getFechaCreacion().equals(laOtra.getFechaCreacion());
 			}
-		} else if (!fechaCreacion.equals(other.fechaCreacion)) {
-			return false;
 		}
-		if (texto == null) {
-			if (other.texto != null) {
-				return false;
-			}
-		} else if (!texto.equals(other.texto)) {
-			return false;
-		}
-		return true;
+		
+			return sonIguales;
 	}
-
-
 
 
 	@Override
@@ -122,6 +127,8 @@ public class Nota implements Comparable<Nota> {
 		}
 		
 		return resultado;	
+		
+		//return this.getCodigo-other.getCodigo;
 	}
 
 	
