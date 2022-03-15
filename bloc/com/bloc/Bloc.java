@@ -1,5 +1,7 @@
 package bloc.com.bloc;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Objects;
 
 import bloc.com.notas.Activable;
@@ -7,10 +9,10 @@ import bloc.com.notas.Nota;
 import bloc.com.notas.NotaAlarma;
 import bloc.com.notas.NotaAlarmaException;
 
-public class Bloc {
+public class Bloc  {
 
 	private static final Integer NUMERO_NOTAS_MAXIMA=100;
-	private Integer numNotas;
+	private Integer numNotas=0;
 	private String nombre;
 	private Nota[] listaNota = new Nota[NUMERO_NOTAS_MAXIMA];
 	
@@ -90,6 +92,34 @@ public class Bloc {
 		
 	}
 	
+	
+	public Nota[] ordenaBloc() {
+		int contadorNotas = contarNotasNoNulas();
+		
+		Nota[] notasOrdenadas = new Nota [contadorNotas];
+		int contadorNotasOrdenadas=0;
+		
+		for (int i = 0; i < notasOrdenadas.length; i++) {
+			if (this.listaNota[i]!=null) {
+				notasOrdenadas[contadorNotasOrdenadas++]=this.listaNota[i];
+				
+			}
+		}
+		
+		Arrays.sort(notasOrdenadas);
+		return notasOrdenadas;
+	}
+
+	private int contarNotasNoNulas() {
+		int contadorNotas=0;
+		for (int i = 0; i < listaNota.length; i++) {
+			if (this.listaNota[i]!=null) {
+				contadorNotas++;
+			}
+		}
+		return contadorNotas;
+	}
+	
 
 	public static Integer getNumeroNotasMaxima() {
 		return NUMERO_NOTAS_MAXIMA;
@@ -122,6 +152,7 @@ public class Bloc {
 	public String toString() {
 		return "Bloc con nombre " + nombre;
 	}
+
 	
 	
 	

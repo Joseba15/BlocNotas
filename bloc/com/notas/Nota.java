@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class Nota implements Comparable<Nota> {
 
-	private static Integer codigoSiguiente;
-	private Integer codigo;
+	private static int codigoSiguiente;
+	private int codigo=0;
 	private String texto;
 	private LocalDateTime fechaCreacion;
 	private LocalDateTime fechaUltimaModificacion;
@@ -119,14 +119,18 @@ public class Nota implements Comparable<Nota> {
 	
 	@Override
 	public int compareTo(Nota other) {
+		
+		
 		int resultado=0;
-		if (this.fechaCreacion.isBefore(other.fechaCreacion)) {
-			resultado=-1;
-		}else if (this.fechaCreacion.isAfter(other.fechaCreacion)) {
-			resultado=1;
+		if (other!=null) {
+			if (this.fechaCreacion.isBefore(other.fechaCreacion)) {
+				resultado=-1;
+			}else if (this.fechaCreacion.isAfter(other.fechaCreacion)) {
+				resultado=1;
+			}			
 		}
 		
-		return resultado;	
+		return -resultado;	
 		
 		//return this.getCodigo-other.getCodigo;
 	}

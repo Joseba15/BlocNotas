@@ -10,11 +10,12 @@ import bloc.com.notas.NotaAlarmaException;
 
 public class MainApp {
 	
-	private static String MENU_PRINCIPAL="Menu para crear notas (Introduzca 4 para salir)"
+	private static String MENU_PRINCIPAL="Menu para crear notas (Introduzca 4 para salir) \n"
 			+ "1. Crear nota : \n"
 			+ "2. Crear nota alarma : \n"
 			+ "3. Modificar nota : \n"
-			+ "4. Salir. \n"
+			+ "4. Ordenar nota: \n"
+			+ "5. Salir. \n"
 			+ "Introduzca una opcion: \n";
 	
 	
@@ -28,17 +29,20 @@ public class MainApp {
 		
 		Bloc bloc = new Bloc("bloc 1");
 		
-		while (opcion!=4) {
+		while (opcion!=5) {
 			if (opcion==1) {
 				System.out.println("Introduzca el texto a introducir en la nota :");
 				String text = sc.nextLine();
 				Nota n = new Nota(text);
 				bloc.addNota(n);
-			}
-			
-			else if (opcion==2) {
+			}else if (opcion==2) {
 				crearFecha(sc);
+			}else if (opcion==4) {
+				for (Nota n : bloc.ordenaBloc()) {
+					System.out.println(n);
+				}
 			}
+			System.out.println("------------------------------------------------------");
 			System.out.println(MENU_PRINCIPAL);
 			opcion=Integer.valueOf(sc.nextLine());
 		}
